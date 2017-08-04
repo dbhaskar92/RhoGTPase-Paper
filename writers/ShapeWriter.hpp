@@ -50,6 +50,7 @@ template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
 class ShapeWriter : public AbstractCellPopulationWriter<ELEMENT_DIM, SPACE_DIM>
 {
 private:
+    
     /** Needed for serialization. */
     friend class boost::serialization::access;
     /**
@@ -69,10 +70,9 @@ public:
     /**
      * Default constructor.
      */
-    ShapeWriter();
+    ShapeWriter();	
 	
-	
-	void WriteHeader(AbstractCellPopulation<ELEMENT_DIM, SPACE_DIM>* pCellPopulation);
+    void WriteHeader(AbstractCellPopulation<ELEMENT_DIM, SPACE_DIM>* pCellPopulation);
 
     /**
      * Visit the population and write the data.
@@ -199,8 +199,7 @@ public:
      *
      * @param pCellPopulation a pointer to the VertexBasedCellPopulation to visit.
      */
-    virtual void Visit(VertexBasedCellPopulation<SPACE_DIM>* pCellPopulation);
-	
+    virtual void Visit(VertexBasedCellPopulation<SPACE_DIM>* pCellPopulation);	
 	
 };
 

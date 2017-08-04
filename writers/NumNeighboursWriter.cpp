@@ -36,10 +36,9 @@ void NumNeighboursWriter<ELEMENT_DIM, SPACE_DIM>::VisitAnyPopulation(AbstractCel
 	
     pCellPopulation->Update();
 
-    unsigned num_cells = pCellPopulation->GetNumRealCells();
-	
+    unsigned num_cells = pCellPopulation->GetNumRealCells();	
 
-	*this->mpOutStream << num_cells << " ";
+    *this->mpOutStream << num_cells << " ";
     
 }
 
@@ -51,8 +50,7 @@ void NumNeighboursWriter<ELEMENT_DIM, SPACE_DIM>::Visit(MeshBasedCellPopulation<
     pCellPopulation->Update();
 
     unsigned num_cells = pCellPopulation->GetNumRealCells();
-	double total_area = static_cast<MutableMesh<ELEMENT_DIM,SPACE_DIM>&>((pCellPopulation->rGetMesh())).GetVolume();
-
+    double total_area = static_cast<MutableMesh<ELEMENT_DIM,SPACE_DIM>&>((pCellPopulation->rGetMesh())).GetVolume();
     
     *this->mpOutStream << num_cells << " ";
 
@@ -79,21 +77,21 @@ template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
 void NumNeighboursWriter<ELEMENT_DIM, SPACE_DIM>::Visit(VertexBasedCellPopulation<SPACE_DIM>* pCellPopulation)
 {
 	
-	pCellPopulation->Update();
+    pCellPopulation->Update();
 
-	int neighbours[7] = {};
+    int neighbours[7] = {};
 
-	for (typename AbstractCellPopulation<SPACE_DIM>::Iterator cell_iter = pCellPopulation->Begin();
-	cell_iter != pCellPopulation->End();
-	++cell_iter){
-		std::set<unsigned> neighbour_indices = pCellPopulation->GetNeighbouringLocationIndices(*cell_iter);
-		int num_neighbours = neighbour_indices.size();
-		neighbours[num_neighbours-1] += 1;
-	}
+    for (typename AbstractCellPopulation<SPACE_DIM>::Iterator cell_iter = pCellPopulation->Begin();
+      cell_iter != pCellPopulation->End();
+      ++cell_iter){
+        std::set<unsigned> neighbour_indices = pCellPopulation->GetNeighbouringLocationIndices(*cell_iter);
+        int num_neighbours = neighbour_indices.size();
+        neighbours[num_neighbours-1] += 1;
+    }
 	
-	for (int i = 0; i < sizeof(neighbours)/sizeof(neighbours[0]); i ++){
-    	*this->mpOutStream  << ","<< neighbours[i];
-	}	
+    for (int i = 0; i < sizeof(neighbours)/sizeof(neighbours[0]); i ++){
+        *this->mpOutStream  << ","<< neighbours[i];
+    }	
 	
 }
 

@@ -50,6 +50,7 @@ template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
 class CsvWriter : public AbstractCellPopulationWriter<ELEMENT_DIM, SPACE_DIM>
 {
 private:
+    
     /** Needed for serialization. */
     friend class boost::serialization::access;
     /**
@@ -71,7 +72,8 @@ public:
      */
     CsvWriter();
 
-	void WriteHeader(AbstractCellPopulation<ELEMENT_DIM, SPACE_DIM>* pCellPopulation);
+    void WriteHeader(AbstractCellPopulation<ELEMENT_DIM, SPACE_DIM>* pCellPopulation);
+    
     /**
      * Visit the population and write the data.
      *

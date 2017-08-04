@@ -18,7 +18,7 @@
 XMLCellWriter<ELEMENT_DIM, SPACE_DIM>::XMLCellWriter()
     : AbstractCellWriter<ELEMENT_DIM, SPACE_DIM>("cell_data.xml")
 {
-	this->mVtkCellDataName = "XML_dummy_attribute";
+    this->mVtkCellDataName = "XML_dummy_attribute";
 };
 
 
@@ -44,70 +44,70 @@ void XMLCellWriter<ELEMENT_DIM, SPACE_DIM>::WriteTimeStamp()
     template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
 void XMLCellWriter<ELEMENT_DIM, SPACE_DIM>::VisitCell(CellPtr pCell, AbstractCellPopulation<ELEMENT_DIM, SPACE_DIM>* pCellPopulation)
 {
-	// Cell ID
-        *this->mpOutStream << "<cell ";
-	unsigned cell_id = pCell->GetCellId();
-	*this->mpOutStream << "cell_id=\"" << cell_id << "\" ";
+    // Cell ID
+    *this->mpOutStream << "<cell ";
+    unsigned cell_id = pCell->GetCellId();
+    *this->mpOutStream << "cell_id=\"" << cell_id << "\" ";
 	
-	// Centroid
-        c_vector<double, SPACE_DIM> centre_location = pCellPopulation->GetLocationOfCellCentre(pCell);
-        *this->mpOutStream << "x=\"" << centre_location[0] << "\" ";
-        *this->mpOutStream << "y=\"" << centre_location[1] << "\" ";
+    // Centroid
+    c_vector<double, SPACE_DIM> centre_location = pCellPopulation->GetLocationOfCellCentre(pCell);
+    *this->mpOutStream << "x=\"" << centre_location[0] << "\" ";
+    *this->mpOutStream << "y=\"" << centre_location[1] << "\" ";
 
-	// Area
-	double volume = pCell->GetCellData()->GetItem("volume");
-	// Only write cells with finite volume (avoids a case for boundary cells in MeshBasedCellPopulation)
-        if (volume < DBL_MAX)   
-        {
-          *this->mpOutStream << "area=\"" << volume << "\" ";
-        }
+    // Area
+    double volume = pCell->GetCellData()->GetItem("volume");
+    // Only write cells with finite volume (avoids a case for boundary cells in MeshBasedCellPopulation)
+    if (volume < DBL_MAX)   
+    {
+        *this->mpOutStream << "area=\"" << volume << "\" ";
+    }
 	
-	// Label
-	if (pCell->HasCellProperty<CellLabel>()){
-		*this->mpOutStream << "CellLabel=\"" << 1 << "\" ";
-	}
+    // Label
+    if (pCell->HasCellProperty<CellLabel>()){
+        *this->mpOutStream << "CellLabel=\"" << 1 << "\" ";
+    }
 	
-	// Target Area
-	double target_area = pCell->GetCellData()->GetItem("target area");
-	*this->mpOutStream << "target_area=\"" << target_area << "\" ";
+    // Target Area
+    double target_area = pCell->GetCellData()->GetItem("target area");
+    *this->mpOutStream << "target_area=\"" << target_area << "\" ";
 	
-	// Area from ODE
-	double ODE_area = pCell->GetCellData()->GetItem("AREA");
-	*this->mpOutStream << "ODE_area=\"" << ODE_area << "\" ";
+    // Area from ODE
+    double ODE_area = pCell->GetCellData()->GetItem("AREA");
+    *this->mpOutStream << "ODE_area=\"" << ODE_area << "\" ";
 	
-	// GTPase Concentration
-	double G = pCell->GetCellData()->GetItem("G");
-	*this->mpOutStream << "G=\"" << target_area << "\" ";
+    // GTPase Concentration
+    double G = pCell->GetCellData()->GetItem("G");
+    *this->mpOutStream << "G=\"" << target_area << "\" ";
 	
-	// Perimeter
-	unsigned elem_index = pCellPopulation->GetLocationIndexUsingCell(pCell);
-        double perimeter = dynamic_cast<VertexBasedCellPopulation<ELEMENT_DIM>*>(pCellPopulation)->rGetMesh().GetSurfaceAreaOfElement(elem_index);
-        *this->mpOutStream << "perimeter=\"" << perimeter << "\" ";
+    // Perimeter
+    unsigned elem_index = pCellPopulation->GetLocationIndexUsingCell(pCell);
+    double perimeter = dynamic_cast<VertexBasedCellPopulation<ELEMENT_DIM>*>(pCellPopulation)->rGetMesh().GetSurfaceAreaOfElement(elem_index);
+    *this->mpOutStream << "perimeter=\"" << perimeter << "\" ";
 
-	// Neighbours
-        std::set<unsigned> neighbours = pCellPopulation->GetNeighbouringLocationIndices(pCell);
+    // Neighbours
+    std::set<unsigned> neighbours = pCellPopulation->GetNeighbouringLocationIndices(pCell);
 	
-	// Number of Neighbours
-	int num_neighbours = neighbours.size();
-	*this->mpOutStream << "num_neighbours=\"" << num_neighbours << "\" ";
+    // Number of Neighbours
+    int num_neighbours = neighbours.size();
+    *this->mpOutStream << "num_neighbours=\"" << num_neighbours << "\" ";
 	
-	// List of Neighbouring Cell IDs
-	*this->mpOutStream << "neighbors=\"";
-        for (std::set<unsigned>::iterator neighbour_iter = neighbours.begin();
-            neighbour_iter != neighbours.end();
-            ++neighbour_iter)
-        {
-          *this->mpOutStream << " " << (pCellPopulation->GetCellUsingLocationIndex(*neighbour_iter))->GetCellId();
-        }
-        *this->mpOutStream << "\" ";
+    // List of Neighbouring Cell IDs
+    *this->mpOutStream << "neighbors=\"";
+    for (std::set<unsigned>::iterator neighbour_iter = neighbours.begin();
+      neighbour_iter != neighbours.end();
+      ++neighbour_iter)
+    {
+        *this->mpOutStream << " " << (pCellPopulation->GetCellUsingLocationIndex(*neighbour_iter))->GetCellId();
+    }
+    *this->mpOutStream << "\" ";
 	
-	// Number of Edges	
-	VertexElement < ELEMENT_DIM, ELEMENT_DIM > *VertexElement = dynamic_cast<VertexBasedCellPopulation<ELEMENT_DIM>*>(pCellPopulation)->GetElementCorrespondingToCell(pCell);
-	int num_edges = VertexElement->GetNumNodes();
-	*this->mpOutStream << "num_edges=\"" << num_edges << "\" ";
+    // Number of Edges	
+    VertexElement < ELEMENT_DIM, ELEMENT_DIM > *VertexElement = dynamic_cast<VertexBasedCellPopulation<ELEMENT_DIM>*>(pCellPopulation)->GetElementCorrespondingToCell(pCell);
+    int num_edges = VertexElement->GetNumNodes();
+    *this->mpOutStream << "num_edges=\"" << num_edges << "\" ";
 		
-	// End tag   
-        *this->mpOutStream << "/>\n";
+    // End tag   
+    *this->mpOutStream << "/>\n";
 }
 
 // Dummy implementation because it is required

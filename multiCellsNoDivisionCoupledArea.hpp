@@ -80,6 +80,7 @@
 
 class multiCellsNoDivisionCoupled : public AbstractCellBasedTestSuite
 {
+
 public:
 
     void TestVertexBasedMonolayer() throw (Exception)
@@ -87,7 +88,6 @@ public:
 		
 
         /* 2500 cells */
-
         HoneycombVertexMeshGenerator generator(50, 50);
         MutableVertexMesh<2,2>* p_mesh = generator.GetMesh();
 
@@ -143,11 +143,9 @@ public:
 	// Generate XML file
 	cell_population.AddCellWriter<XMLCellWriter>();
 		
-  OffLatticeSimulation<2> simulator(cell_population);
+        OffLatticeSimulation<2> simulator(cell_population);
 		
-
-  simulator.SetOutputDirectory("50x50GTPAse_2500_0.2beta_medAdhesion_Random_G_scale_1point15_deformation100_surface_0");
-
+        simulator.SetOutputDirectory("50x50GTPAse_2500_0.2beta_medAdhesion_Random_G_scale_1point15_deformation100_surface_0");
         
 	simulator.SetSamplingTimestepMultiple(200);
 	simulator.SetDt(0.01);

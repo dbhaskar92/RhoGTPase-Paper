@@ -75,14 +75,14 @@ public:
     void EvaluateYDerivatives(double time, const std::vector<double>& rY,
                               std::vector<double>& rDY)
     {
-		// Birfurcation parameter
-		double beta = 0.2;
-		// GTPase eqn
+        // Birfurcation parameter
+        double beta = 0.2;
+        // GTPase eqn
         rDY[0] = ((0.1 + beta * (pow(rY[2],10)/(pow(rY[1],10)+pow(rY[2],10))) + 1.5*(pow(rY[0],4)/(1+pow(rY[0],4))))*(2-rY[0])-rY[0])*0.25;
-		// Target Area eqn
+        // Target Area eqn
         rDY[1] = (-0.1*(rY[1]-1.15*(1-0.75*(pow(rY[0],4)/(pow(0.3,4)+pow(rY[0],4))))))*0.25;
-		// Dummy eqn to get access to cell area, initially equal to 0.866025
-		rDY[2] = 0;
+        // Dummy eqn to get access to cell area, initially equal to 0.866025
+        rDY[2] = 0;
     }
 };
 
@@ -121,7 +121,7 @@ public:
     ODESrnModel()
         : AbstractOdeSrnModel(3, boost::shared_ptr<AbstractCellCycleModelOdeSolver>())
     {
-		// ODE solver
+        // ODE solver
         mpOdeSolver = CellCycleModelOdeSolver<ODESrnModel, RungeKutta4IvpOdeSolver>::Instance();
         mpOdeSolver->Initialise();
         SetDt(0.01);
@@ -150,18 +150,18 @@ public:
 
         /* Output the ODE system variable to {{{CellData}}}. */
         mpCell->GetCellData()->SetItem("G",mpOdeSystem->rGetStateVariables()[0]);
-		mpCell->GetCellData()->SetItem("target area",mpOdeSystem->rGetStateVariables()[1]);
-		mpCell->GetCellData()->SetItem("AREA",mpOdeSystem->rGetStateVariables()[2]);
+        mpCell->GetCellData()->SetItem("target area",mpOdeSystem->rGetStateVariables()[1]);
+        mpCell->GetCellData()->SetItem("AREA",mpOdeSystem->rGetStateVariables()[2]);
     }
 	
-	void ResetForDivision(){
-		AbstractOdeSrnModel::ResetForDivision();
-	    std::vector<double> init_conds = mpOdeSystem->GetInitialConditions();
-	    for (unsigned i=0; i<2; i++)
-	    {
-	        mpOdeSystem->rGetStateVariables()[i] = init_conds[i];
-	    }
+    void ResetForDivision(){
+        AbstractOdeSrnModel::ResetForDivision();
+        std::vector<double> init_conds = mpOdeSystem->GetInitialConditions();
+        for (unsigned i=0; i<2; i++)
+        {
+            mpOdeSystem->rGetStateVariables()[i] = init_conds[i];
 	}
+    }
 
 };
 

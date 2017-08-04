@@ -144,7 +144,7 @@ void AbstractOdeSrnModel::SetFinishedRunningOdes(bool finishedRunningOdes)
 
 void AbstractOdeSrnModel::SetInitialConditions(std::vector<double> initialConditions)
 {
-assert(initialConditions.size() == mStateSize);
+    assert(initialConditions.size() == mStateSize);
     mInitialConditions = initialConditions;
 }
 

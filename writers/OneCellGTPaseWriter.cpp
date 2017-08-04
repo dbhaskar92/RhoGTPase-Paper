@@ -26,8 +26,7 @@ OneCellGTPaseWriter<ELEMENT_DIM, SPACE_DIM>::OneCellGTPaseWriter()
 template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
 void OneCellGTPaseWriter<ELEMENT_DIM, SPACE_DIM>::WriteHeader(AbstractCellPopulation<ELEMENT_DIM, SPACE_DIM>* pCellPopulation)
 {
-	
-	*this->mpOutStream << "# TimeStamp,Cell_ID,Cell_Area,Target_Area,Cell_Perimeter,num_neighbours,num_edges,G,A_t,A\n";
+    *this->mpOutStream << "# TimeStamp,Cell_ID,Cell_Area,Target_Area,Cell_Perimeter,num_neighbours,num_edges,G,A_t,A\n";
 }
 
 template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
@@ -36,8 +35,7 @@ void OneCellGTPaseWriter<ELEMENT_DIM, SPACE_DIM>::VisitAnyPopulation(AbstractCel
 
     pCellPopulation->Update();
 
-    unsigned num_cells = pCellPopulation->GetNumRealCells();
-	
+    unsigned num_cells = pCellPopulation->GetNumRealCells();	
 
     *this->mpOutStream << num_cells << ",";
     
@@ -51,7 +49,6 @@ void OneCellGTPaseWriter<ELEMENT_DIM, SPACE_DIM>::Visit(MeshBasedCellPopulation<
 
     unsigned num_cells = pCellPopulation->GetNumRealCells();
     double total_area = static_cast<MutableMesh<ELEMENT_DIM,SPACE_DIM>&>((pCellPopulation->rGetMesh())).GetVolume();
-
     
     *this->mpOutStream << num_cells << " ";
 
@@ -81,39 +78,41 @@ void OneCellGTPaseWriter<ELEMENT_DIM, SPACE_DIM>::Visit(VertexBasedCellPopulatio
     pCellPopulation->Update();
 
     unsigned num_cells = pCellPopulation->GetNumRealCells();
-	for (typename AbstractCellPopulation<SPACE_DIM>::Iterator cell_iter = pCellPopulation->Begin();
-	cell_iter != pCellPopulation->End();
-	++cell_iter){
+    
+    for (typename AbstractCellPopulation<SPACE_DIM>::Iterator cell_iter = pCellPopulation->Begin();
+      cell_iter != pCellPopulation->End();
+      ++cell_iter){
 		
-		double cell_id = cell_iter->GetCellId();
+        double cell_id = cell_iter->GetCellId();
 		
-		if (cell_id == 1){
+        if (cell_id == 1){
 			
-			double volume = cell_iter->GetCellData()->GetItem("volume");
-			unsigned elem_index = pCellPopulation->GetLocationIndexUsingCell(*cell_iter);
-			double perimeter = pCellPopulation->rGetMesh().GetSurfaceAreaOfElement(elem_index);
-			std::set<unsigned> neighbour_indices = pCellPopulation->GetNeighbouringLocationIndices(*cell_iter);
-			int num_neighbours = neighbour_indices.size();
+            double volume = cell_iter->GetCellData()->GetItem("volume");
+	    unsigned elem_index = pCellPopulation->GetLocationIndexUsingCell(*cell_iter);
+	    double perimeter = pCellPopulation->rGetMesh().GetSurfaceAreaOfElement(elem_index);
+	    std::set<unsigned> neighbour_indices = pCellPopulation->GetNeighbouringLocationIndices(*cell_iter);
+	    int num_neighbours = neighbour_indices.size();
 			
-			VertexElement < SPACE_DIM, SPACE_DIM > *VertexElement = pCellPopulation->GetElementCorrespondingToCell(*cell_iter);
-			int num_edges = VertexElement->GetNumNodes();
-			double G = cell_iter->GetCellData()->GetItem("G");
-			double a = cell_iter->GetCellData()->GetItem("AREA");
-			double target_area = cell_iter->GetCellData()->GetItem("target area");
+	    VertexElement < SPACE_DIM, SPACE_DIM > *VertexElement = pCellPopulation->GetElementCorrespondingToCell(*cell_iter);
+	    int num_edges = VertexElement->GetNumNodes();
+	    double G = cell_iter->GetCellData()->GetItem("G");
+	    double a = cell_iter->GetCellData()->GetItem("AREA");
+	    double target_area = cell_iter->GetCellData()->GetItem("target area");
 			
-		    *this->mpOutStream  << ","<< cell_id;
-			*this->mpOutStream  << ","<< volume;
-			*this->mpOutStream  << ","<< target_area;
-			*this->mpOutStream  << ","<< perimeter;
-			*this->mpOutStream  << ","<< num_neighbours;
-			*this->mpOutStream  << ","<< num_edges;
-			*this->mpOutStream  << ","<< G;
-			*this->mpOutStream  << ","<< target_area;
-			*this->mpOutStream  << ","<< a;
+	    *this->mpOutStream  << ","<< cell_id;
+	    *this->mpOutStream  << ","<< volume;
+	    *this->mpOutStream  << ","<< target_area;
+	    *this->mpOutStream  << ","<< perimeter;
+	    *this->mpOutStream  << ","<< num_neighbours;
+	    *this->mpOutStream  << ","<< num_edges;
+	    *this->mpOutStream  << ","<< G;
+	    *this->mpOutStream  << ","<< target_area;
+	    *this->mpOutStream  << ","<< a;
 			
-		}
+        }
 
-	}
+    }
+
 }
 
 // Explicit instantiation

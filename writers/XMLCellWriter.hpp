@@ -18,6 +18,7 @@ template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
 class XMLCellWriter : public AbstractCellWriter<ELEMENT_DIM, SPACE_DIM>
 {
     private:
+        
         std::string mSimulationType;
         std::string mTypeList;
         std::string mAxisDivision;
@@ -39,6 +40,7 @@ class XMLCellWriter : public AbstractCellWriter<ELEMENT_DIM, SPACE_DIM>
             }
 
     public:
+
         XMLCellWriter();
 
         void VisitCell(CellPtr pCell, AbstractCellPopulation<ELEMENT_DIM, SPACE_DIM>* pCellPopulation);

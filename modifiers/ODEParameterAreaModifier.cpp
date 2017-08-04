@@ -50,11 +50,11 @@ void ODEParameterAreaModifier<DIM>::UpdateCellData(AbstractCellPopulation<DIM,DI
          ++cell_iter)
     {
         // Get the volume of this cell
-		double cell_volume = cell_iter->GetCellData()->GetItem("volume");
+        double cell_volume = cell_iter->GetCellData()->GetItem("volume");
 		
         AbstractSrnModel* model_ptr_base = cell_iter->GetSrnModel();
-		AbstractOdeSrnModel* model_ptr = dynamic_cast<AbstractOdeSrnModel*>(model_ptr_base);
-		model_ptr->GetStateVariables()[2]=cell_volume;
+        AbstractOdeSrnModel* model_ptr = dynamic_cast<AbstractOdeSrnModel*>(model_ptr_base);
+        model_ptr->GetStateVariables()[2]=cell_volume;
     }
 }
 

@@ -27,8 +27,7 @@ CsvWriter<ELEMENT_DIM, SPACE_DIM>::CsvWriter()
 template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
 void CsvWriter<ELEMENT_DIM, SPACE_DIM>::WriteHeader(AbstractCellPopulation<ELEMENT_DIM, SPACE_DIM>* pCellPopulation)
 {
-	
-	*this->mpOutStream << "# TimeStamp,Total_Number_Of_Cells,Average_Area,Average_Perimeter,Num_Labelled\n";
+    *this->mpOutStream << "# TimeStamp,Total_Number_Of_Cells,Average_Area,Average_Perimeter,Num_Labelled\n";
 }
 
 template<unsigned ELEMENT_DIM, unsigned SPACE_DIM>
@@ -37,10 +36,9 @@ void CsvWriter<ELEMENT_DIM, SPACE_DIM>::VisitAnyPopulation(AbstractCellPopulatio
 
     pCellPopulation->Update();
 
-    unsigned num_cells = pCellPopulation->GetNumRealCells();
-	
+    unsigned num_cells = pCellPopulation->GetNumRealCells();	
 
-	*this->mpOutStream << num_cells << ",";
+    *this->mpOutStream << num_cells << ",";
     
 }
 
@@ -51,8 +49,7 @@ void CsvWriter<ELEMENT_DIM, SPACE_DIM>::Visit(MeshBasedCellPopulation<ELEMENT_DI
     pCellPopulation->Update();
 
     unsigned num_cells = pCellPopulation->GetNumRealCells();
-	double total_area = static_cast<MutableMesh<ELEMENT_DIM,SPACE_DIM>&>((pCellPopulation->rGetMesh())).GetVolume();
-
+    double total_area = static_cast<MutableMesh<ELEMENT_DIM,SPACE_DIM>&>((pCellPopulation->rGetMesh())).GetVolume();
     
     *this->mpOutStream << num_cells << " ";
 
@@ -81,32 +78,32 @@ void CsvWriter<ELEMENT_DIM, SPACE_DIM>::Visit(VertexBasedCellPopulation<SPACE_DI
     pCellPopulation->Update();
 
     unsigned num_cells = pCellPopulation->GetNumRealCells();
-	double total_area = 0;
-	double total_perimeter = 0;
-	double labelled_count = 0;
+    double total_area = 0;
+    double total_perimeter = 0;
+    double labelled_count = 0;
 	
-	for (typename AbstractCellPopulation<SPACE_DIM>::Iterator cell_iter = pCellPopulation->Begin();
-	cell_iter != pCellPopulation->End();
-	++cell_iter){
+    for (typename AbstractCellPopulation<SPACE_DIM>::Iterator cell_iter = pCellPopulation->Begin();
+      cell_iter != pCellPopulation->End();
+      ++cell_iter){
 		
-		double volume = cell_iter->GetCellData()->GetItem("volume");
-		total_area+=volume;
+        double volume = cell_iter->GetCellData()->GetItem("volume");
+        total_area+=volume;
 		
-		unsigned elem_index = pCellPopulation->GetLocationIndexUsingCell(*cell_iter);
-		double perimeter = pCellPopulation->rGetMesh().GetSurfaceAreaOfElement(elem_index);
-		total_perimeter += perimeter;
+        unsigned elem_index = pCellPopulation->GetLocationIndexUsingCell(*cell_iter);
+        double perimeter = pCellPopulation->rGetMesh().GetSurfaceAreaOfElement(elem_index);
+        total_perimeter += perimeter;
 		
-		if (cell_iter->template HasCellProperty<CellLabel>()){
-			labelled_count +=1;
-		}
-	}
+        if (cell_iter->template HasCellProperty<CellLabel>()){
+            labelled_count +=1;
+        }
+    }
 	
-	double avg_area = total_area/num_cells;
-	double avg_perimeter = total_perimeter/num_cells;
+    double avg_area = total_area/num_cells;
+    double avg_perimeter = total_perimeter/num_cells;
     *this->mpOutStream  << ","<< num_cells;
-	*this->mpOutStream  << ","<< avg_area;
-	*this->mpOutStream  << ","<< avg_perimeter;
-	*this->mpOutStream  << ","<< labelled_count;
+    *this->mpOutStream  << ","<< avg_area;
+    *this->mpOutStream  << ","<< avg_perimeter;
+    *this->mpOutStream  << ","<< labelled_count;
 }
 
 // Explicit instantiation
